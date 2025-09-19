@@ -5,7 +5,7 @@ import {
 } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
-import { Admin, AdminDocument } from "./admin.schema";
+import { Admin, AdminDocument } from "./schemas/admin.schema";
 import { AdminDto, LoginDto } from "./dto/admin.dto.ts/admin.dto";
 import * as bcrypt from "bcryptjs";
 import { JwtService } from "@nestjs/jwt";
