@@ -7,7 +7,7 @@ import { InjectModel } from "@nestjs/mongoose";
 import { Link, Locale } from "./schemas/link.schema";
 import { Model } from "mongoose";
 import { LinkDto } from "./dto/link.dto";
-import { LinkResponseDto } from "./dto/response-link.dto";
+import { LinkFullLanguage, LinkResponseDto } from "./dto/response-link.dto";
 import { UpdateLinkDto } from "./dto/update-link.dto";
 
 @Injectable()
@@ -40,6 +40,21 @@ export class LinkService {
     };
   }
 
+  // service
+  async findFullLang(id: string): Promise<LinkFullLanguage> {
+    const doc = await this.linkModel.findById(id).lean().exec();
+    if (!doc) {
+      throw new NotFoundException(`Link with id ${id} not found`);
+    }
+    return {
+      _id: doc._id.toString(),
+      translations: doc.translations,
+      linkPathname: doc.linkPathname,
+      createdAt: doc.createdAt.toISOString(),
+      updatedAt: doc.updatedAt.toISOString(),
+    };
+  }
+
   async findAll(
     lang?: Locale,
     page = 1,
@@ -66,32 +81,20 @@ export class LinkService {
     }));
   }
 
-  async update(
-    id: string,
-    dto: UpdateLinkDto,
-    lang: Locale = "uz"
-  ): Promise<LinkResponseDto> {
+  async update(id: string, dto: UpdateLinkDto): Promise<LinkFullLanguage> {
     const updated = await this.linkModel
-      .findByIdAndUpdate(
-        id,
-        { $set: dto },
-        { new: true, lean: true } // new: true → yangilangan hujjatni qaytaradi
-      )
+      .findByIdAndUpdate(id, { $set: dto }, { new: true, lean: true })
       .exec();
-
     if (!updated) {
       throw new NotFoundException(`Link with id ${id} not found`);
     }
 
     return {
       _id: updated._id.toString(),
-      linkName:
-        updated.translations?.[lang]?.linkName ??
-        updated.translations?.["uz"]?.linkName ??
-        "",
+      translations: updated.translations,
       linkPathname: updated.linkPathname,
-      createdAt: updated.createdAt!,
-      updatedAt: updated.updatedAt!,
+      createdAt: updated.createdAt!.toString(),
+      updatedAt: updated.updatedAt!.toString(),
     };
   }
 

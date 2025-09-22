@@ -10,7 +10,7 @@ import {
 } from "@nestjs/common";
 import { LinkService } from "./link.service";
 import { LinkDto } from "./dto/link.dto";
-import { LinkResponseDto } from "./dto/response-link.dto";
+import { LinkFullLanguage, LinkResponseDto } from "./dto/response-link.dto";
 import { Locale } from "./schemas/link.schema";
 import { UpdateLinkDto } from "./dto/update-link.dto";
 
@@ -37,13 +37,17 @@ export class LinkController {
     return this.linkService.findAll(lang, Number(page), Number(limit));
   }
 
+  @Get(":id")
+  async findFullLang(@Param("id") id: string): Promise<LinkFullLanguage> {
+    return this.linkService.findFullLang(id);
+  }
+
   @Put(":id")
   async update(
     @Param("id") id: string,
-    @Body() dto: UpdateLinkDto,
-    @Query("lang") lang: Locale = "uz"
-  ): Promise<LinkResponseDto> {
-    return this.linkService.update(id, dto, lang);
+    @Body() dto: UpdateLinkDto
+  ): Promise<LinkFullLanguage> {
+    return this.linkService.update(id, dto);
   }
 
   @Delete(":id")
