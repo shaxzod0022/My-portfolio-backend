@@ -10,7 +10,11 @@ import {
 } from "@nestjs/common";
 import { LinkService } from "./link.service";
 import { LinkDto } from "./dto/link.dto";
-import { LinkFullLanguage, LinkResponseDto } from "./dto/response-link.dto";
+import {
+  LinkFullLanguage,
+  LinkResponseDto,
+  LinkUpdate,
+} from "./dto/response-link.dto";
 import { Locale } from "./schemas/link.schema";
 import { UpdateLinkDto } from "./dto/update-link.dto";
 
@@ -45,9 +49,10 @@ export class LinkController {
   @Put(":id")
   async update(
     @Param("id") id: string,
-    @Body() dto: UpdateLinkDto
-  ): Promise<LinkFullLanguage> {
-    return this.linkService.update(id, dto);
+    @Body() dto: UpdateLinkDto,
+    @Query("lang") lang: Locale = "uz"
+  ): Promise<LinkUpdate> {
+    return this.linkService.update(id, dto, lang);
   }
 
   @Delete(":id")

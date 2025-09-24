@@ -34,6 +34,7 @@ import { LinkService } from "./module/link/link.service";
     ContactModule,
     SkillModule,
     LinkModule,
+    SkillModule,
   ],
   controllers: [AppController],
   providers: [AppService],

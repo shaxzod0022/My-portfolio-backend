@@ -1,6 +1,3 @@
-import { Types } from "mongoose";
-import { TranslationDto } from "./translation.dto";
-
 export class LinkResponseDto {
   _id!: string;
   linkName!: string;
@@ -16,6 +13,13 @@ export interface LinkFullLanguage {
     ru: { linkName: string };
     en: { linkName: string };
   };
+  linkPathname: string;
+  createdAt: string;
+  updatedAt: string;
+}
+export interface LinkUpdate {
+  _id: string;
+  linkName: string;
   linkPathname: string;
   createdAt: string;
   updatedAt: string;

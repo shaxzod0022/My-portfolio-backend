@@ -7,7 +7,11 @@ import { InjectModel } from "@nestjs/mongoose";
 import { Link, Locale } from "./schemas/link.schema";
 import { Model } from "mongoose";
 import { LinkDto } from "./dto/link.dto";
-import { LinkFullLanguage, LinkResponseDto } from "./dto/response-link.dto";
+import {
+  LinkFullLanguage,
+  LinkResponseDto,
+  LinkUpdate,
+} from "./dto/response-link.dto";
 import { UpdateLinkDto } from "./dto/update-link.dto";
 
 @Injectable()
@@ -81,7 +85,11 @@ export class LinkService {
     }));
   }
 
-  async update(id: string, dto: UpdateLinkDto): Promise<LinkFullLanguage> {
+  async update(
+    id: string,
+    dto: UpdateLinkDto,
+    lang: Locale
+  ): Promise<LinkUpdate> {
     const updated = await this.linkModel
       .findByIdAndUpdate(id, { $set: dto }, { new: true, lean: true })
       .exec();
@@ -91,7 +99,9 @@ export class LinkService {
 
     return {
       _id: updated._id.toString(),
-      translations: updated.translations,
+      linkName:
+        updated.translations![lang || "uz"]?.linkName ||
+        updated.translations!["uz"].linkName,
       linkPathname: updated.linkPathname,
       createdAt: updated.createdAt!.toString(),
       updatedAt: updated.updatedAt!.toString(),
