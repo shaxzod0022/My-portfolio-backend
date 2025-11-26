@@ -24,7 +24,7 @@ export class LinkController {
 
   // POST /links
   @Post()
-  async create(
+  async create( 
     @Body() dto: LinkDto,
     @Query("lang") lang: Locale = "uz"
   ): Promise<LinkResponseDto> {

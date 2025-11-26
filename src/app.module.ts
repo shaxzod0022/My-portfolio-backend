@@ -10,10 +10,6 @@ import { BlogModule } from "./module/blog/blog.module";
 import { ContactModule } from "./module/contact/contact.module";
 import { SkillModule } from "./module/skill/skill.module";
 import { LinkModule } from "./module/link/link.module";
-import { SkillController } from "./module/skill/skill.controller";
-import { LinkController } from "./module/link/link.controller";
-import { SkillService } from "./module/skill/skill.service";
-import { LinkService } from "./module/link/link.service";
 
 @Module({
   imports: [

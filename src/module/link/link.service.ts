@@ -27,7 +27,7 @@ export class LinkService {
       .exec();
 
     if (exists) {
-      throw new ConflictException("Link pathname already exists");
+      throw new ConflictException("Link pathname already exists!");
     }
 
     const created = new this.linkModel(dto);
